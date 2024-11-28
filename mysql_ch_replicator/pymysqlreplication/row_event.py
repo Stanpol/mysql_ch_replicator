@@ -329,10 +329,20 @@ class RowsEvent(BinLogEvent):
             except LookupError:
                 # python does not support Mysql encoding type ex)swe7 it will not decoding then Show origin string
                 string = origin_string
+            except UnboundLocalError:
+                print(' === ', self.table, column)
+                print(' === ', column.character_set_name)
+                print(' === ', string)
+                raise
         else:
             # MYSQL 5.xx Version  Goes Here
             # We don't know encoding type So apply Default Utf-8
-            string = string.decode(errors=decode_errors)
+            try:
+                string = string.decode(errors=decode_errors)
+            except UnboundLocalError:
+                print(' === ', self.table, column)
+                print(' === ', string)
+                raise
         return string
 
     def __read_bit(self, column):
