@@ -329,7 +329,7 @@ class RowsEvent(BinLogEvent):
             except LookupError:
                 # python does not support Mysql encoding type ex)swe7 it will not decoding then Show origin string
                 string = origin_string
-            except UnboundLocalError:
+            except:
                 print(' === ', self.table, column)
                 print(' === ', column.character_set_name)
                 print(' === ', string)
@@ -339,7 +339,7 @@ class RowsEvent(BinLogEvent):
             # We don't know encoding type So apply Default Utf-8
             try:
                 string = string.decode(errors=decode_errors)
-            except UnboundLocalError:
+            except:
                 print(' === ', self.table, column)
                 print(' === ', string)
                 raise
